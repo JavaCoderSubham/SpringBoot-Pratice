@@ -2,6 +2,8 @@ package com.spring.motivity.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +26,36 @@ public class ManagerController {
 	@Autowired
 	private ManagerService service;
 	
+	private final static Logger log = LogManager.getLogger(ManagerController.class);
+	
 	@GetMapping
 	public ResponseEntity<List<Manager>> getAll() {
+		
+		log.info("=========== Get All Method Start ===========");
+		
+		List<Manager> list = service.getAll();
+		
+		log.info("getAll() -> {}",list);
+		
+		log.info("=========== Get All Method End ===========");
+		
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(service.getAll()); 
+				.body(list); 
 	}
 	
 	@GetMapping("/user")
 	public ResponseEntity<Manager> getById(@RequestParam int id) {
+		
+		log.info("=========== Get By ID Method Start =============");
+		
+		log.info("getById() -> id : ",id);
+		Manager manager = service.getById(id);
+		
+		log.info("getById() -> {}",manager);
+		
+		log.info("=========== Get By ID Method End =============");
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
-				.body(service.getById(id));
+				.body(manager);
 	}
 	
 	@PostMapping
@@ -120,6 +142,10 @@ public class ManagerController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
 				.body(service.findBySalaryGreaterThanEqual(salary));
 	}
+	
+	
+	
+	
 	
 }
 

@@ -2,10 +2,13 @@ package com.spring.motivity.service;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.motivity.entity.Manager;
+import com.spring.motivity.exception.ManagerIdNotFoundException;
 import com.spring.motivity.repository.ManagerRepository;
 
 @Service
@@ -14,18 +17,34 @@ public class ManagerServiceImpl implements ManagerService {
 	@Autowired
 	private ManagerRepository repository;
 	
+	private final static Logger log = LogManager.getLogger(ManagerServiceImpl.class);
+	
 	
 	@Override
 	public List<Manager> getAll() {
-		return repository.findAll();
+		
+		log.info("start getAll() -> ");
+		
+		List<Manager> list = repository.findAll();
+		
+		log.warn("end getAll() -> {}",list);;
+		
+		return list;
 	}
 
 	@Override
 	public Manager getById(int id) {
+		
+		log.info("getById() ->before Repository call id : {}", id);
+		
 		Manager manager = repository.findById(id).orElse(null);
 		
-		if(manager == null) 
-			throw new NullPointerException("User Id Not Found");
+		
+		if(manager == null) {
+			log.error("User id not Present : id : {}",id);
+			throw new ManagerIdNotFoundException("User Id Not Found");
+		}
+		log.info("after Getting value User : {}",manager);
 		
 		return manager;
 	}
