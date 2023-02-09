@@ -1,0 +1,15 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+</head>
+<body>
+    <form th:action="@{get/user}" method="post">
+        <input type="text" placeholder="Enter email" name="email"><br>
+        <input type="password" name="password" placeholder="Enter Password">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
